@@ -41,3 +41,9 @@ class FileStorage:
                     FileStorage.__objects[k] = eval(cls)(temp[k])
         except Exception as e:
             pass
+
+        def delete(self, obj=None):
+            try:
+                del(self.__obj[obj.id])
+            except:
+                print("** object not valid")
