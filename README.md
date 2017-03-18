@@ -8,9 +8,13 @@ The project is currently in its first phase, where we are creating a command lin
 
 ----------------------------------------
 
-**Authors**
+**V1 Authors**
 - **Philip Yoo**, \<philip.yoo@holbertonschool.com>, @philipYoo10
 - **Jianqin Wang**, \<jianqin.wang@holbertonschool.com>, @jianqinwang94
+
+**V2 Authors**
+- **Daniel Bacon**, \<daniel.bacon@holbertonschool.com>, @dbacon338
+- **Colton Walker**, \<colton.walker@holbertonschool.com>, @ColtonWalker815
 
 ----------------------------------------
 
