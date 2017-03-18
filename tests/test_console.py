@@ -67,7 +67,8 @@ class Test_Console(unittest.TestCase):
 
     def test_show_error_class_missing(self):
         with captured_output() as (out, err):
-            self.cli.do_show("d3da85f2-499c-43cb-b33d-3d7935bc808c")
+            self.cli.do_show("BaseModel d3da85f2-499c-43cb-b33d-3d7935bc809d")
+            # original above entry: "d3da85f2-499c-43cb-b33d-3d7935bc808c"
         output = out.getvalue().strip()
         self.assertEqual(output, "** no instance found **")
 
@@ -171,14 +172,14 @@ class Test_Console(unittest.TestCase):
 
     def test_update_error_no_id(self):
         with captured_output() as (out, err):
-            self.cli.do_update("BaseModel name Cat")
+            self.cli.do_update("BaseModel")
         output = out.getvalue().strip()
         self.assertEqual(output, "** instance id missing **")
 
     def test_update_error_invalid_class(self):
         with captured_output() as (out, err):
-            self.cli.do_update("Human " +
-                               "d3da85f2-499c-43cb-b33d-3d7935bc808c name Cat")
+            self.cli.do_update(
+                "Human d3da85f2-499c-43cb-b33d-3d7935bc808c name Cat")
         output = out.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
 
@@ -190,8 +191,8 @@ class Test_Console(unittest.TestCase):
 
     def test_update_error_missing_value(self):
         with captured_output() as (out, err):
-            self.cli.do_update("BaseModel " +
-                               "d3da85f2-499c-43cb-b33d-3d7935bc808c name")
+            self.cli.do_update(
+                "BaseModel d3da85f2-499c-43cb-b33d-3d7935bc808c name")
         output = out.getvalue().strip()
         self.assertEqual(output, "** value missing **")
 

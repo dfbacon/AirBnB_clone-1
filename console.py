@@ -26,7 +26,8 @@ class HBNBCommand(cmd.Cmd):
         """Create a new Basemodel"""
         args = args.split()
         if len(args) != 1:
-            print("** clas name missing **")
+            print("Usage: create BaseModel")
+            # print("** class name missing **")
         else:
             if len(args) > 0 and args[0] in HBNBCommand.valid_classes:
                 new_obj = eval(args[0])()
@@ -41,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        if len(args) == 1:
+        if (len(args) == 1) and (args[0] in HBNBCommand.valid_classes):
             print("** instance id missing **")
             return
         if args[0] not in HBNBCommand.valid_classes:
@@ -57,13 +58,13 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, args):
         """Usage: destroy BaseModel 1234-1234-1234"""
         args = args.split()
-        if len(args) == 0:
+        if (len(args) == 1) and args[0] not in HBNBCommand.valid_classes:
             print("** class name missing **")
             return
-        if len(args) == 1:
+        elif (len(args) == 1) and (args[0] in HBNBCommand.valid_classes):
             print("** instance id missing **")
             return
-        if args[0] not in HBNBCommand.valid_classes:
+        elif args[0] not in HBNBCommand.valid_classes:
             print("** class doesn't exist **")
             return
         all_objs = storage.all()
@@ -92,16 +93,17 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """Use: update <class name> <id> <attribute name> <attribute value>"""
         args = args.split()
-        if len(args) == 0:
+        if len(args) == 0 or (len(args) <= 3 and args[0] not in
+                              HBNBCommand.valid_classes):
             print("** class name missing **")
             return
-        if len(args) == 1:
+        if (len(args) == 1 and args[0] in HBNBCommand.valid_classes):
             print("** instance id missing **")
             return
-        if len(args) == 2:
+        if len(args) == 2 and args[0] in HBNBCommand.valid_classes:
             print("** attribute name missing **")
             return
-        if len(args) == 3:
+        if len(args) == 3 and args[0] in HBNBCommand.valid_classes:
             print("** value missing **")
             return
         if args[0] not in HBNBCommand.valid_classes:
