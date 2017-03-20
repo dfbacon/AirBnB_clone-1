@@ -22,18 +22,28 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_create(self, args): # update with (**kwargs) for #2
+    def do_create(self, args):
         """Create a new Basemodel"""
         args = args.split()
-        if len(args) != 1:
+        if len(args) < 1:
             print("Usage: create BaseModel")
+            return
+        class_name = args[0]
+        if class_name in HBNBCommand.valid_classes:
+            if len(args) > 1:
+                for i in range(1, len(args)):
+                    if "=" not in args[i]:
+                        print("** invalid parameter **")
+                        return
+            new_obj = eval(class_name)()
+            print(new_obj.id)
+            for j in range(1, len(args)):
+                key = args[j].split("=")[0]
+                value=args[j].split("=")[1]
+                new_obj.__dict__[key] = value
+            new_obj.save()
         else:
-            if len(args) > 0 and args[0] in HBNBCommand.valid_classes:
-                new_obj = eval(args[0])()
-                print(new_obj.id)
-                new_obj.save()
-            else:
-                return
+            return
 
     def do_show(self, args):
         """Usage: show BaseModel 1234-1234-1234"""
