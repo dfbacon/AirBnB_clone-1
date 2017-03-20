@@ -26,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
         """Create a new Basemodel"""
         args = args.split()
         if len(args) < 1:
-            print("Usage: create BaseModel")
+            print("** class name missing **")
             return
         class_name = args[0]
         if class_name in HBNBCommand.valid_classes:
@@ -36,13 +36,25 @@ class HBNBCommand(cmd.Cmd):
                         print("** invalid parameter **")
                         return
             new_obj = eval(class_name)()
-            print(new_obj.id)
             for j in range(1, len(args)):
                 key = args[j].split("=")[0]
                 value=args[j].split("=")[1]
+                if len(key) is 0 or len(value) is 0:
+                    print("** invalid key or value **")
+                    return
+                if '"' in value or "'" in value:
+                    value = value.replace('_', ' ')
+                    value = value.replace("'", '')
+                    value = value.replace('"', '')
+                elif '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
                 new_obj.__dict__[key] = value
+            print(new_obj.id)
             new_obj.save()
         else:
+            print("** class doesn't exist **")
             return
 
     def do_show(self, args):

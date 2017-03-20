@@ -76,7 +76,7 @@ class Test_Console(unittest.TestCase):
         with captured_output() as (out, err):
             self.cli.do_create('')
         output = out.getvalue().strip()
-        self.assertEqual(output, "Usage: create BaseModel")
+        self.assertEqual(output, "** class name missing **")
 
         with captured_output() as (out, err):
             self.cli.do_create("BaseModel")
@@ -86,6 +86,26 @@ class Test_Console(unittest.TestCase):
             self.cli.do_show("BaseModel {}".format(output))
         output2 = out.getvalue().strip()
         self.assertTrue(output in output2)
+
+        with captured_output() as (out, err):
+            self.cli.do_create('create State name "California"')
+        output3 = out.getvalue().strip()
+        self.assertTrue(output, "** invalid parameter **")
+
+        with captured_output() as (out, err):
+            self.cli.do_create('create House name="California"')
+        output = out.getvalue().strip()
+        self.assertTrue(output, "** class doesn't exist **")
+
+        with captured_output() as (out, err):
+            self.cli.do_create('Place ="California"')
+        output = out.getvalue().strip()
+        self.assertTrue(output, "** invalid key or value **")
+
+        with captured_output() as (out, err):
+            self.cli.do_create("Place name=")
+        output = out.getvalue().strip()
+        self.assertTrue(output, "** invalid key or value **")
 
     def test_destroy_correct(self):
         test_args = {'updated_at': datetime(2017, 2, 12, 00, 31, 53, 331997),
