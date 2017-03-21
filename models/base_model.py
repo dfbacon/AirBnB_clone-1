@@ -1,11 +1,24 @@
 #!/usr/bin/python3
-import datetime
+from datetime import datetime
 import uuid
 import models
+import os
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, DateTime
+
+Base = declarative_base()
 
 
 class BaseModel:
     """The base class for all storage objects in this project"""
+
+    if os.environ['HBNB_TYPE_STORAGE'] == "db":
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime, nullable=False, default=
+                            datetime.now())
+        updated_at = Column(DateTime, nullable=False, default=
+                            datetime.now(), onupdate=datetime.now())
+
     def __init__(self, *args, **kwargs):
         """initialize class object"""
         if len(args) > 0:
@@ -14,8 +27,8 @@ class BaseModel:
         else:
             self.created_at = datetime.datetime.now()
             self.id = str(uuid.uuid4())
-        for k in kwargs:
-            print("kwargs: {}: {}".format(k, kwargs[k]))
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     def save(self):
         """method to update self"""
@@ -31,8 +44,17 @@ class BaseModel:
     def to_json(self):
         """convert to json"""
         dupe = self.__dict__.copy()
-        dupe["created_at"] = str(dupe["created_at"])
-        if ("updated_at" in dupe):
-            dupe["updated_at"] = str(dupe["updated_at"])
-        dupe["__class__"] = type(self).__name__
+        if os.environ['HBNB_TYPE_STORAGE'] != "db":
+            dupe["created_at"] = str(dupe["created_at"])
+            if ("updated_at" in dupe):
+                dupe["updated_at"] = str(dupe["updated_at"])
+                dupe["__class__"] = type(self).__name__
+        try:
+            del(self.__dict__[_sa_instance_state])
+        except KeyError:
+            pass
         return dupe
+
+    def delete(self):
+        '''delete current instance'''
+        # not yet implemented
