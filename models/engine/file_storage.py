@@ -42,8 +42,9 @@ class FileStorage:
         except Exception as e:
             pass
 
-        def delete(self, obj=None):
+    def delete(self, obj=None):
+        if obj is not None:
             try:
-                del(self.__obj[obj.id])
+                del(self.__objects[obj])
             except:
-                print("** object not valid")
+                pass
