@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+This is the '__init__' method.
+'''
 from models.base_model import BaseModel
 from models.user import User
 from models.amenity import Amenity
