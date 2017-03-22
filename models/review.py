@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+This is the 'review' method.
+'''
 from models import *
 from sqlalchemy import Table, Column, Integer, String, DateTime
 
@@ -16,4 +19,5 @@ class Review(BaseModel, Base):
         user_id = ""
 
     def __init__(self, *args, **kwargs):
+        '''This is the initialization method'''
         super().__init__(*args, **kwargs)

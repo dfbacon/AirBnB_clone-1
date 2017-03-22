@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+This is the 'state' module.
+'''
 from models import *
 from sqlalchemy import Table, Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
@@ -16,4 +19,5 @@ class State(BaseModel, Base):
         cities = [""]
 
     def __init__(self, *args, **kwargs):
+        '''This is the initialization method'''
         super(State, self).__init__(*args, **kwargs)

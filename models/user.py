@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+This is the 'user' module.
+'''
 from models import *
 from sqlalchemy import Table, Column, Integer, Float, String, Datetime
 from sqlalchemy.orm import relationship
@@ -22,4 +25,5 @@ class User(BaseModel, Base):
         places = [""]
 
     def __init__(self, *args, **kwargs):
+        '''This is the initialization method'''
         super().__init__(*args, **kwargs)
