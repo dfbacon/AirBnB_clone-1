@@ -38,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
             new_obj = eval(class_name)()
             for j in range(1, len(args)):
                 key = args[j].split("=")[0]
-                value=args[j].split("=")[1]
+                value = args[j].split("=")[1]
                 if len(key) is 0 or len(value) is 0:
                     print("** invalid key or value **")
                     return
