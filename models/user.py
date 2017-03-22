@@ -5,7 +5,7 @@ This is the 'user' module.
 from models import *
 from models.base_model import BaseModel, Base
 from models.place import Place
-from sqlalchemy import Table, Column, Integer, Float, String, DateTime
+from sqlalchemy import *
 from sqlalchemy.orm import relationship
 
 

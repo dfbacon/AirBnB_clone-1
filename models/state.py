@@ -5,7 +5,7 @@ This is the 'state' module.
 from models import *
 from models.base_model import BaseModel, Base
 from models.city import City
-from sqlalchemy import Table, Column, Integer, String, DateTime
+from sqlalchemy import *
 from sqlalchemy.orm import relationship
 
 

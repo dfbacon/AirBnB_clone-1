@@ -2,12 +2,12 @@
 '''
 This is the 'base_model' module.
 '''
-from datetime import datetime
+import datetime
 import uuid
 import models
 import os
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import *
 
 try:
     e = os.environ.get('HBNB_TYPE_STORAGE')
@@ -23,11 +23,11 @@ class BaseModel():
     """The base class for all storage objects in this project"""
 
     if os.environ.get('HBNB_TYPE_STORAGE') == "db":
-        id = Column(String(60), nullable=False, primary_key=True)
-        created_at = Column(DateTime, nullable=False, default=
-                            datetime.now())
-        updated_at = Column(DateTime, nullable=False, default=
-                            datetime.now(), onupdate=datetime.now())
+        id = Column(String(60), primary_key=True, nullable=False)
+        created_at = Column(DateTime, default=datetime.datetime.now(),
+                            nullable=False)
+        updated_at = Column(DateTime, default=datetime.datetime.now(),
+                            onupdate=datetime.datetime.now(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """initialize class object"""

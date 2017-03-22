@@ -4,7 +4,7 @@ This is the 'city' module.
 '''
 from models import *
 from models.base_model import BaseModel, Base
-from sqlalchemy import Table, Column, Integer, String, DateTime
+from sqlalchemy import *
 
 
 class City(BaseModel, Base):
@@ -12,7 +12,7 @@ class City(BaseModel, Base):
     if Base is not object:
         __tablename__ = "cities"
         name = Column(String(128), nullable=False)
-        state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
+        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
     else:
         name = ""
         state_id = ""
