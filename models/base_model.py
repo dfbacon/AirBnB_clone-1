@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+This is the 'base_model' module.
+'''
 from datetime import datetime
 import uuid
 import models
@@ -64,4 +67,4 @@ class BaseModel:
 
     def delete(self):
         '''delete current instance'''
-        # not yet implemented
+        models.storage.delete(self)
