@@ -41,7 +41,6 @@ class HBNBCommand(cmd.Cmd):
                 value = args[j].split("=")[1]
                 if len(key) is 0 or len(value) is 0:
                     print("** invalid key or value **")
-                    return
                 if '"' in value or "'" in value:
                     value = value.replace('_', ' ')
                     value = value.replace("'", '')
