@@ -3,7 +3,7 @@
 This is the 'user' module.
 '''
 from models import *
-from sqlalchemy import Table, Column, Integer, Float, String, Datetime
+from sqlalchemy import Table, Column, Integer, Float, String, DateTime
 from sqlalchemy.orm import relationship
 
 
