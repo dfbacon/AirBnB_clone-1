@@ -19,7 +19,7 @@ except:
     Base = object
 
 
-class BaseModel:
+class BaseModel():
     """The base class for all storage objects in this project"""
 
     if os.environ.get('HBNB_TYPE_STORAGE') == "db":
