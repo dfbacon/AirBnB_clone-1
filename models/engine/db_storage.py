@@ -37,7 +37,7 @@ class DBStorage():
                 query.update(instance.id, instance)
             return (query)
         else:
-            for cls in valid_models:
+            for cls in DBStorage.valid_models:
                 cls = getattr(sys.modules["models"], cls)
                 for instance in self.__session.query(cls):
                     query.update({instance.id: instance})
