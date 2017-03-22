@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 from models import *
 from sqlalchemy import Table, Column, Integer, String, DateTime
-import os
 
 
 class City(BaseModel, Base):

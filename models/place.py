@@ -1,7 +1,6 @@
 from models import *
 from sqlalchemy import Table, Column, Integer, Float, String, Datetime
 from sqlalchemy.orm import relationship
-import os
 
 
 class PlaceAmenity(Base):
