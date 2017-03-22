@@ -6,10 +6,13 @@ import os
 
 class City(BaseModel, Base):
     '''This is the 'City' class'''
-    if os.environ['HBNB_TYPE_STORAGE'] == "db":
+    if Base is not object:
         __tablename__ = "cities"
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
+    else:
+        name = ""
+        state_id = ""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

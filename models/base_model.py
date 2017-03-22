@@ -6,13 +6,20 @@ import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
 
-Base = declarative_base()
+try:
+    e = os.environ.get('HBNB_TYPE_STORAGE')
+    if e == "db":
+        Base = declarative_base()
+    else:
+        Base = object
+except:
+    Base = object
 
 
 class BaseModel:
     """The base class for all storage objects in this project"""
 
-    if os.environ['HBNB_TYPE_STORAGE'] == "db":
+    if os.environ.get('HBNB_TYPE_STORAGE') == "db":
         id = Column(String(60), nullable=False, primary_key=True)
         created_at = Column(DateTime, nullable=False, default=
                             datetime.now())
