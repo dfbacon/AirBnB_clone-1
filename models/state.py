@@ -3,7 +3,7 @@ from models import *
 from sqlalchemy import Table, Column, Integer, String, DateTime
 import os
 
-class State(BaseModel):
+class State(BaseModel, Base):
     '''This is the 'State' class'''
 	if Base is not object:
         __tablename__ = "states"
