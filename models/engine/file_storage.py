@@ -1,24 +1,32 @@
 #!/usr/bin/python3
+'''
+This is the 'file_storage' module.
+'''
 import json
 from datetime import datetime
 from models import *
 
 
 class FileStorage:
+    '''This is the 'FileStorage' class'''
     __file_path = "file.json"
     __objects = {}
 
     def __init__(self):
+        '''This is the initialization method'''
         self.reload()
 
     def all(self, cls=None):
+        '''This is the 'all' method'''
         return FileStorage.__objects
 
     def new(self, obj):
+        '''This is the 'new' method'''
         if obj is not None:
             FileStorage.__objects[obj.id] = obj
 
     def save(self):
+        '''This is the 'save' method'''
         store = {}
         for k in FileStorage.__objects.keys():
             store[k] = FileStorage.__objects[k].to_json()
@@ -27,6 +35,7 @@ class FileStorage:
             fd.write(json.dumps(store))
 
     def reload(self):
+        '''This is the 'reload' method'''
         try:
             with open(FileStorage.__file_path,
                       mode="r+", encoding="utf-8") as fd:
@@ -43,6 +52,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        '''This is the 'delete' method'''
         if obj is not None:
             try:
                 del(self.__objects[obj])
