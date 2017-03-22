@@ -54,13 +54,13 @@ class BaseModel():
     def to_json(self):
         """convert to json"""
         dupe = self.__dict__.copy()
-        if os.environ['HBNB_TYPE_STORAGE'] != "db":
+        if os.environ.get('HBNB_TYPE_STORAGE') != "db":
             dupe["created_at"] = str(dupe["created_at"])
             if ("updated_at" in dupe):
                 dupe["updated_at"] = str(dupe["updated_at"])
                 dupe["__class__"] = type(self).__name__
         try:
-            del(self.__dict__[_sa_instance_state])
+            del(self.__dict__['_sa_instance_state'])
         except KeyError:
             pass
         return dupe

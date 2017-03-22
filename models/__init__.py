@@ -14,8 +14,7 @@ from models.engine import db_storage
 import os
 
 
-if os.environ["HBNB_TYPE_STORAGE"] and os.environ.get(
-        "HBNB_TYPE_STORAGE") == "db":
+if os.environ.get("HBNB_TYPE_STORAGE") == "db":
     storage = db_storage.DBStorage()
 else:
     storage = file_storage.FileStorage()
