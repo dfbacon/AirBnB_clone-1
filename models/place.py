@@ -3,6 +3,8 @@
 This is the 'place' module.
 '''
 from models import *
+from models.base_model import BaseModel, Base
+from models.amenity import Amenity
 from sqlalchemy import Table, Column, Integer, Float, String, Datetime
 from sqlalchemy.orm import relationship
 
