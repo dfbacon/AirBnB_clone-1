@@ -107,6 +107,9 @@ class Test_Console(unittest.TestCase):
         output = out.getvalue().strip()
         self.assertTrue(output, "** invalid key or value **")
 
+        # should remove files from files.json
+        # self.cli.do_destroy("BaseModel " + output)
+
     def test_destroy_correct(self):
         test_args = {'updated_at': datetime(2017, 2, 12, 00, 31, 53, 331997),
                      'id': 'f519fb40-1f5c-458b-945c-2ee8eaaf4900',
