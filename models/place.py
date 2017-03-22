@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+'''
+This is the 'place' module.
+'''
 from models import *
 from sqlalchemy import Table, Column, Integer, Float, String, Datetime
 from sqlalchemy.orm import relationship
@@ -45,4 +49,5 @@ class Place(BaseModel, Base):
                 amenities = [""]
 
         def __init__(self, *args, **kwargs):
+                '''This is the initialization method'''
                 super().__init__(*args, **kwargs)
