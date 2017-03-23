@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+'''
+This is the 'test_base_model' module.
+'''
 import unittest
 from datetime import datetime
 from models import *
@@ -9,8 +13,9 @@ class Test_BaseModel(unittest.TestCase):
     """
 
     def setUp(self):
+        '''sets up objects for testing
+        '''
         self.model1 = BaseModel()
-
         test_args = {'created_at': datetime(2017, 2, 10, 2, 6, 55, 258849),
                      'updated_at': datetime(2017, 2, 10, 2, 6, 55, 258966),
                      'id': '46458416-e5d5-4985-aa48-a2b369d03d2a',
@@ -19,12 +24,16 @@ class Test_BaseModel(unittest.TestCase):
         self.model2.save()
 
     def test_instantiation(self):
+        '''test for proper initialization
+        '''
         self.assertIsInstance(self.model1, BaseModel)
         self.assertTrue(hasattr(self.model1, "created_at"))
         self.assertTrue(hasattr(self.model1, "id"))
         self.assertFalse(hasattr(self.model1, "updated_at"))
 
     def test_reinstantiation(self):
+        '''test for proper re-initialization
+        '''
         self.assertIsInstance(self.model2, BaseModel)
         self.assertEqual(self.model2.id,
                          '46458416-e5d5-4985-aa48-a2b369d03d2a')
@@ -32,6 +41,8 @@ class Test_BaseModel(unittest.TestCase):
                          datetime(2017, 2, 10, 2, 6, 55, 258849))
 
     def test_save(self):
+        '''test for save attribute
+        '''
         self.assertFalse(hasattr(self.model1, "updated_at"))
         self.model1.save()
         self.assertTrue(hasattr(self.model1, "updated_at"))
@@ -40,6 +51,8 @@ class Test_BaseModel(unittest.TestCase):
         self.assertNotEqual(old_time, self.model2.updated_at)
 
     def test_to_json(self):
+        '''test conversion to json file type
+        '''
         jsonified = self.model2.to_json()
         self.assertNotEqual(self.model2.__dict__, jsonified)
         self.assertNotIsInstance(jsonified["created_at"], datetime)
@@ -47,6 +60,16 @@ class Test_BaseModel(unittest.TestCase):
         self.assertEqual(jsonified["created_at"], '2017-02-10 02:06:55.258849')
         self.assertTrue(hasattr(jsonified, "__class__"))
         self.assertEqual(jsonified["__class__"], "BaseModel")
+
+    def test_types(self):
+        """testing attributes to ensure proper typing
+        """
+        self.assertTrue(type(self.model1.id) is str)
+        self.assertTrue(type(self.model1.__class__) is type)
+        m1c = self.model1.created_at
+        m2c = self.model2.created_at
+        self.assertTrue(type(m1c) is datetime)
+        self.assertTrue(type(m2c) is datetime)
 
 if __name__ == "__main__":
     unittest.main()
