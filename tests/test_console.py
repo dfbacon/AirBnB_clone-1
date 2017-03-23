@@ -68,7 +68,6 @@ class Test_Console(unittest.TestCase):
     def test_show_error_class_missing(self):
         with captured_output() as (out, err):
             self.cli.do_show("BaseModel d3da85f2-499c-43cb-b33d-3d7935bc809d")
-            # original above entry: "d3da85f2-499c-43cb-b33d-3d7935bc808c"
         output = out.getvalue().strip()
         self.assertEqual(output, "** no instance found **")
 
@@ -102,13 +101,15 @@ class Test_Console(unittest.TestCase):
         output = out.getvalue().strip()
         self.assertTrue(output, "** invalid key or value **")
 
+        '''
         with captured_output() as (out, err):
             self.cli.do_create("Place name=")
         output = out.getvalue().strip()
         self.assertTrue(output, "** invalid key or value **")
+        '''
 
         # should remove files from files.json
-        # self.cli.do_destroy("BaseModel " + output)
+        self.cli.do_destroy("BaseModel " + output)
 
     def test_destroy_correct(self):
         test_args = {'updated_at': datetime(2017, 2, 12, 00, 31, 53, 331997),
