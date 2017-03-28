@@ -34,7 +34,7 @@ def hello_c(text):
 
 @app.route('/python/')
 @app.route('/python')
-@app.route('/python/<text>')  # extra () per Guillaume's prototype
+@app.route('/python/<text>')
 def hello_python(text="is cool"):
     txt = text.replace('_', ' ')
     return ('Python {}'.format(txt))
