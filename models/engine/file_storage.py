@@ -58,3 +58,7 @@ class FileStorage:
                 del(self.__objects[obj])
             except:
                 pass
+
+    def close(self):
+        '''This is the 'close' method'''
+        self.save()

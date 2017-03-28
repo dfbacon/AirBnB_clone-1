@@ -23,3 +23,7 @@ class State(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         '''This is the initialization method'''
         super(State, self).__init__(*args, **kwargs)
+
+    if Base is object:
+        def cities(self):
+            storage.all('City')
