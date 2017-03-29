@@ -52,6 +52,7 @@ class HBNBCommand(cmd.Cmd):
                 new_obj.__dict__[key] = value
             print(new_obj.id)
             new_obj.save()
+            return
         else:
             print("** class doesn't exist **")
             return
