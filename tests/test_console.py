@@ -110,30 +110,53 @@ class Test_Console(unittest.TestCase):
         output2 = out.getvalue().strip()
         self.assertTrue(output in output2)
 
+    def test_create_state(self):
+        '''test creation of state
+        '''
         with captured_output() as (out, err):
-            self.cli.do_create('create State name "California"')
+            self.cli.do_create('State name=\"California\"')
         output3 = out.getvalue().strip()
-        self.assertTrue(output, "** invalid parameter **")
 
         with captured_output() as (out, err):
-            self.cli.do_create('create House name="California"')
+            self.cli.do_show("State {}".format(output3))
         output4 = out.getvalue().strip()
-        self.assertTrue(output, "** class doesn't exist **")
+        self.assertTrue(output3 in output4)
 
-        with captured_output() as (out, err):
-            self.cli.do_create('Place ="California"')
-        output5 = out.getvalue().strip()
-        self.assertTrue(output, "** invalid key or value **")
-
+    def test_update_correct_docreate(self):
+        '''test update of created variables in db
         '''
+        self.cli.do_create("State name=\"California\"")
+        self.cli.do_create("State name=\"Arizona\"")
         with captured_output() as (out, err):
-            self.cli.do_create("Place name=")
+            self.cli.do_all("State")
         output = out.getvalue().strip()
-        self.assertTrue(output, "** invalid key or value **")
-        '''
+        self.assertTrue("California" in output)
+        self.assertTrue("Arizona" in output)
+        self.assertFalse("Ohio" in output)
 
-        # should remove files from files.json
-        self.cli.do_destroy("BaseModel " + output)
+    def test_update_correct_docreate_variables(self):
+        '''test update of created variables
+        '''
+        phrase = "Place city_id=\"0001\" user_id=\"0001\"" + \
+                 "name=\"My_little_house\" number_rooms=4 number_bathrooms=2" \
+                 + "max_guest=10 price_by_night=300 latitude=37.773972" + \
+                 " longitude=-122.431297"
+        self.cli.do_create(phrase)
+        with captured_output() as (out, err):
+            self.cli.do_all("Place")
+        output = out.getvalue().strip()
+        self.assertTrue("price_by_night" in output)
+        self.assertTrue("datetime.datetime" in output)
+        self.assertTrue("122.431297" in output)
+
+    def test_db_create_simple(self):
+        '''tests creation of db
+        '''
+        self.cli.do_create("State name=\"California\"")
+        with captured_output() as (out, err):
+            self.cli.do_all("State")
+        output = out.getvalue().strip()
+        self.assertTrue("California" in output)
 
     def test_destroy_correct(self):
         '''tests the destroy method
