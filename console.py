@@ -1,9 +1,14 @@
 #!/usr/bin/python3
+'''
+This is the 'command' module.
+'''
 import cmd
 from models import *
 
 
 class HBNBCommand(cmd.Cmd):
+    '''This is the 'HBNBCommand' class.
+    '''
     prompt = '(hbnb)'
     storage.reload()
 
@@ -11,6 +16,8 @@ class HBNBCommand(cmd.Cmd):
                      "City", "Amenity", "Place", "Review"]
 
     def emptyline(self):
+        '''This is the 'emptyLine' function.
+        '''
         pass
 
     def do_quit(self, args):
