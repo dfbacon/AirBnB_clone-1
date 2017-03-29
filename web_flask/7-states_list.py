@@ -13,14 +13,14 @@ from flask import render_template
 app = Flask(__name__)
 
 
-@app.route('/states_list/')
+@app.route('/states_list')
 def state_list():
     states = storage.all("State")
     return (render_template("7-states_list.html", states=states))
 
 
 @app.teardown_appcontext
-def close_out(self):
+def teardown(self):
     storage.close()
 
 if __name__ == '__main__':

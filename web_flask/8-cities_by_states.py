@@ -20,7 +20,7 @@ def state_list():
 
 
 @app.teardown_appcontext
-def close_out(exception):
+def teardown(exception):
     storage.close()
 
 if __name__ == '__main__':
