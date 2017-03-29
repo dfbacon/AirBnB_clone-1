@@ -19,28 +19,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, args):
         """Ctrl + D to exit program"""
-        print("")
+        print ("")
         return True
 
     def do_create(self, args):
         """Create a new Basemodel"""
         args = args.split()
         if len(args) < 1:
-            print("** class name missing **")
+            print ("** class name missing **")
             return
         class_name = args[0]
         if class_name in HBNBCommand.valid_classes:
             if len(args) > 1:
                 for i in range(1, len(args)):
                     if "=" not in args[i]:
-                        print("** invalid parameter **")
+                        print ("** invalid parameter **")
                         return
             new_obj = eval(class_name)()
             for j in range(1, len(args)):
                 key = args[j].split("=")[0]
                 value = args[j].split("=")[1]
                 if len(key) is 0 or len(value) is 0:
-                    print("** invalid key or value **")
+                    print ("** invalid key or value **")
                 if '"' in value or "'" in value:
                     value = value.replace('_', ' ')
                     value = value.replace("'", '')
@@ -50,43 +50,43 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     value = int(value)
                 new_obj.__dict__[key] = value
-            print(new_obj.id)
+            print (new_obj.id)
             new_obj.save()
             return
         else:
-            print("** class doesn't exist **")
+            print ("** class doesn't exist **")
             return
 
     def do_show(self, args):
         """Usage: show BaseModel 1234-1234-1234"""
         args = args.split()
         if len(args) == 0:
-            print("** class name missing **")
+            print ("** class name missing **")
             return
         if (len(args) == 1) and (args[0] in HBNBCommand.valid_classes):
-            print("** instance id missing **")
+            print ("** instance id missing **")
             return
         if args[0] not in HBNBCommand.valid_classes:
-            print("** class doesn't exist **")
+            print ("** class doesn't exist **")
             return
         all_objs = storage.all()
         for objs_id in all_objs.keys():
             if objs_id == args[1] and args[0] in str(type(all_objs[objs_id])):
-                print(all_objs[objs_id])
+                print (all_objs[objs_id])
                 return
-        print("** no instance found **")
+        print ("** no instance found **")
 
     def do_destroy(self, args):
         """Usage: destroy BaseModel 1234-1234-1234"""
         args = args.split()
         if (len(args) == 1) and args[0] not in HBNBCommand.valid_classes:
-            print("** class name missing **")
+            print ("** class name missing **")
             return
         elif (len(args) == 1) and (args[0] in HBNBCommand.valid_classes):
-            print("** instance id missing **")
+            print ("** instance id missing **")
             return
         elif args[0] not in HBNBCommand.valid_classes:
-            print("** class doesn't exist **")
+            print ("** class doesn't exist **")
             return
         all_objs = storage.all()
         for objs_id in all_objs.keys():
@@ -94,12 +94,12 @@ class HBNBCommand(cmd.Cmd):
                 del all_objs[objs_id]
                 storage.save()
                 return
-        print("** no instance found **")
+        print ("** no instance found **")
 
     def do_all(self, args):
         """Usage: all Basemodel or all"""
         if args not in HBNBCommand.valid_classes and len(args) != 0:
-            print("** class doesn't exist **")
+            print ("** class doesn't exist **")
             return
         elif args in HBNBCommand.valid_classes:
             all_objs = {k: v for (k, v) in storage.all().items()
@@ -109,26 +109,26 @@ class HBNBCommand(cmd.Cmd):
         else:
             return
         for objs_id in all_objs.keys():
-            print(all_objs[objs_id])
+            print (all_objs[objs_id])
 
     def do_update(self, args):
         """Use: update <class name> <id> <attribute name> <attribute value>"""
         args = args.split()
         if len(args) == 0 or (len(args) <= 3 and args[0] not in
                               HBNBCommand.valid_classes):
-            print("** class name missing **")
+            print ("** class name missing **")
             return
         if (len(args) == 1 and args[0] in HBNBCommand.valid_classes):
-            print("** instance id missing **")
+            print ("** instance id missing **")
             return
         if len(args) == 2 and args[0] in HBNBCommand.valid_classes:
-            print("** attribute name missing **")
+            print ("** attribute name missing **")
             return
         if len(args) == 3 and args[0] in HBNBCommand.valid_classes:
-            print("** value missing **")
+            print ("** value missing **")
             return
         if args[0] not in HBNBCommand.valid_classes:
-            print("** class doesn't exist **")
+            print ("** class doesn't exist **")
             return
         all_objs = storage.all()
         for obj_id in all_objs.keys():
@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(all_objs[obj_id], args[2], args[3])
                 storage.save()
                 return
-        print("** no instance found **")
+        print ("** no instance found **")
 
     def do_User(self, args):
         """Usages:
@@ -224,7 +224,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[:8] == ".count()":
             all_objs = {k: v for (k, v) in storage.all().items()
                         if isinstance(v, eval(cls_name))}
-            print(len(all_objs))
+            print (len(all_objs))
         elif args[:9] == '.destroy(':
             self.do_destroy(cls_name + ' ' + args[10:-2])
         elif args[:8] == '.update(':
@@ -249,7 +249,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 return
         else:
-            print("Not a valid command")
+            print ("Not a valid command")
 
 
 if __name__ == '__main__':
