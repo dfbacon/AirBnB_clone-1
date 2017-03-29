@@ -33,36 +33,36 @@ class HBNBCommand(cmd.Cmd):
         """Create a new Basemodel"""
         args = args.split()
         if len(args) < 1:
-            print ("** class name missing **")
-            return
-        class_name = args[0]
-        if class_name in HBNBCommand.valid_classes:
-            if len(args) > 1:
-                for i in range(1, len(args)):
-                    if "=" not in args[i]:
-                        print ("** invalid parameter **")
-                        return
-            new_obj = eval(class_name)()
-            for j in range(1, len(args)):
-                key = args[j].split("=")[0]
-                value = args[j].split("=")[1]
-                if len(key) is 0 or len(value) is 0:
-                    print ("** invalid key or value **")
-                if '"' in value or "'" in value:
-                    value = value.replace('_', ' ')
-                    value = value.replace("'", '')
-                    value = value.replace('"', '')
-                elif '.' in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                new_obj.__dict__[key] = value
-            print (new_obj.id)
-            new_obj.save()
-            return
+            print("** class name missing **")
         else:
-            print ("** class doesn't exist **")
-            return
+            class_name = args[0]
+            if len(args) == 1 and class_name in HBNBCommand.valid_classes:
+                new_obj = eval(class_name)()
+                print(new_obj.id)
+                new_obj.save()
+            if len(args) > 1 and class_name in HBNBCommand.valid_classes:
+                key_dict = {}
+                for item in range(1, len(args)):
+                    name_val = args[item].split("=")
+                    if len(name_val) != 2:
+                        print("{} is invalid name-val pair".format(args[item]))
+                        continue
+                    for i in name_val[1]:
+                        if i.isalpha() is True:
+                            name_val[1] = name_val[1].replace("_", " ")
+                            break
+                    if name_val[1][0] == '"' and name_val[1][-1] == '"':
+                        name_val[1] = name_val[1][1:-1]
+                        key_dict[name_val[0]] = str(name_val[1])
+                    elif '.' in name_val[1]:
+                        key_dict[name_val[0]] = float(name_val[1])
+                    else:
+                        key_dict[name_val[0]] = int(name_val[1])
+                new_obj = eval(class_name)(**key_dict)
+                print(new_obj.id)
+                new_obj.save()
+            else:
+                return
 
     def do_show(self, args):
         """Usage: show BaseModel 1234-1234-1234"""
