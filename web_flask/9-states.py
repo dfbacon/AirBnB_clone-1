@@ -25,11 +25,10 @@ app = Flask(__name__)
 
 
 @app.route('/states/')
-@app.route('/states/<id_number>')
-def cities_by_states(id_number="all"):
-    """List all cities by states"""
+@app.route('/states/<id_name>')
+def cities_by_states(id_name="all"):
     states = storage.all("State")
-    if id_number == "all":
+    if id_name == "all":
         return(render_template("9-states.html", state="all",
                                Query_name="States", states=states.values()))
     else:
@@ -39,13 +38,14 @@ def cities_by_states(id_number="all"):
                 flag = True
                 break
         if flag:
-            found = value.cities
+            result = value.cities
             return(render_template("9-states.html", state="1",
                                    Query_name="State: {}".format(value.name),
-                                   states=found))
+                                   states=result))
         else:
             return(render_template("9-states.html", state="",
-                                   Query_name="None", states=states))
+                                   Query_name="Not found",
+                                   states=states))
 
 
 @app.teardown_appcontext

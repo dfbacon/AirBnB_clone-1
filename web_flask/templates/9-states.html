@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <HTML lang="en">
-  <HEAD>
-    <TITLE>HBNB</TITLE>
-  </HEAD>
-  <BODY>
-    <H1>{{Query_name}}</H1>
-    {% if state == "1" %}
-    <H3>Cities:</H3>
-    {% endif %}
-    {% if state %}
-    <UL>
-      {% for item in state|sort(attribute='name') %}
-      <LI>{{item.id}}: <B>{{item.name}}</B></LI>
-      {% endfor %}
-    </UL>
-    {% endif %}
-  </BODY>
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>{{Query_name}}</H1>
+	    {% if state == "1" %}
+	        <H3>Cities:</H3>
+	    {% endif %}
+            {% if state %}
+	    <UL>
+	          {% for item in states|sort(attribute='name') %}
+                      <LI>{{item.id}}: <B>{{item.name}}</B></LI>
+		  {% endfor %}
+	    </UL>
+	    {% endif %}
+    </BODY>
 </HTML>
