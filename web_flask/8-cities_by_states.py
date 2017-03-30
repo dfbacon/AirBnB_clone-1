@@ -31,8 +31,8 @@ def cities_by_statess():
     result = [[state, [city for city in cities if city.state_id == state.id]]
               for state in states]
     result.sort(key=lambda x: x[0].name)
-    return render_template("8-cities_by_states.html",
-                           Query_name="States", result=result)
+    return(render_template("8-cities_by_states.html",
+                           Query_name="States", result=result))
 
 
 @app.route('/cities_by_states/')
@@ -42,8 +42,8 @@ def cities_by_states():
     result = []
     for state in sorted(states, key=lambda x: x.name):
         result.append([state, state.cities])
-    return render_template("8-cities_by_states.html",
-                           Query_name="States", result=result)
+    return(render_template("8-cities_by_states.html",
+                           Query_name="States", result=result))
 
 
 @app.teardown_appcontext

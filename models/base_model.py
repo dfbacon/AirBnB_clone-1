@@ -58,8 +58,8 @@ class BaseModel():
 
     def __str__(self):
         """edit string representation"""
-        return "[{}] ({}) {}".format(type(self)
-                                     .__name__, self.id, self.__dict__)
+        return("[{}] ({}) {}".format(type(self)
+                                     .__name__, self.id, self.__dict__))
 
     def to_json(self):
         """convert to json"""
@@ -69,7 +69,7 @@ class BaseModel():
         if ("updated_at" in dupe):
             dupe["updated_at"] = dupe["updated_at"].isoformat()
         dupe["__class__"] = type(self).__name__
-        return (dupe)
+        return(dupe)
 
     def delete(self):
         '''delete current instance'''

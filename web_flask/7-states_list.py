@@ -28,8 +28,8 @@ app = Flask(__name__)
 def list_states():
     """list all states in a db"""
     states = storage.all("State").values()
-    return render_template("7-states_list.html",
-                           Query_name="States", states=states)
+    return(render_template("7-states_list.html",
+                           Query_name="States", states=states))
 
 
 @app.teardown_appcontext

@@ -34,7 +34,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, args):
         """Ctrl + D to exit program"""
         print ("")
-        return (True)
+        return(True)
 
     def do_create(self, args):
         """Create a new Basemodel"""
@@ -64,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
             result = dict([item.split("=") for item in a_list])
         except ValueError:
             print("** format error **")
-            return None
+            return(None)
         for key in result.keys():
             if "." in result[key]:
                 try:
@@ -83,8 +83,8 @@ class HBNBCommand(cmd.Cmd):
                 result[key] = str(result[key].replace("_", " "))[1:-1]
             else:
                 print("String Format Error for {}".format(result[key]))
-                return None
-        return (result)
+                return(None)
+        return(result)
 
     def do_show(self, args):
         """Usage: show BaseModel 1234-1234-1234"""
@@ -141,19 +141,19 @@ class HBNBCommand(cmd.Cmd):
         """Use: update <class name> <id> <attribute name> <attribute value>"""
         args = args.split()
         if len(args) == 0:
-            print ("** class name missing **")
+            print("** class name missing **")
             return
         if len(args) == 1:
-            print ("** instance id missing **")
+            print("** instance id missing **")
             return
         if len(args) == 2:
-            print ("** attribute name missing **")
+            print("** attribute name missing **")
             return
         if len(args) == 3:
-            print ("** value missing **")
+            print("** value missing **")
             return
         if args[0] not in HBNBCommand.valid_classes.keys():
-            print ("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
         all_objs = storage.all(args[0])
         for key, value in all_objs.items():
@@ -161,7 +161,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(value, args[2], args[3])
                 storage.save()
                 return
-        print ("** no instance found **")
+        print("** no instance found **")
 
     def do_User(self, args):
         """Usages:
@@ -249,7 +249,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[:8] == ".count()":
             all_objs = {k: v for (k, v) in storage.all().items()
                         if isinstance(v, eval(cls_name))}
-            print (len(all_objs))
+            print(len(all_objs))
         elif args[:9] == '.destroy(':
             self.do_destroy(cls_name + ' ' + args[10:-2])
         elif args[:8] == '.update(':
@@ -274,7 +274,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 return
         else:
-            print ("Not a valid command")
+            print("Not a valid command")
 
 
 if __name__ == '__main__':

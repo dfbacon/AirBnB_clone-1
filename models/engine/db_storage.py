@@ -44,7 +44,7 @@ class DBStorage():
                 if i:
                     for key in i:
                         objects[key.__dict__['id']] = key
-        return (objects)
+        return(objects)
 
     def new(self, obj):
         '''This is the 'new' method'''

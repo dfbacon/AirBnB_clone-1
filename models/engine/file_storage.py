@@ -30,13 +30,13 @@ class FileStorage:
     def all(self, cls=None):
         '''This is the 'all' method'''
         if cls is None:
-            return (FileStorage.__objects)
+            return(FileStorage.__objects)
         else:
             result = {}
             for key, value in FileStorage.__objects.items():
                 if value.__class__.__name__ == cls:
                     result[key] = value
-            return (result)
+            return(result)
 
     def new(self, obj):
         '''This is the 'new' method'''
