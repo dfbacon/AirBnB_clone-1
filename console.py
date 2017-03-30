@@ -130,11 +130,11 @@ class HBNBCommand(cmd.Cmd):
             for instance in storage.all().values():
                 print(instance)
         else:
-            if class_name not in HBNBCommand.valid_classes.keys:
+            if class_name not in HBNBCommand.valid_classes.keys():
                 print("** class doesn't exist **")
                 return
             else:
-                for instance in storage.all(ClassName).values():
+                for instance in storage.all(class_name).values():
                         print(instance)
 
     def do_update(self, args):
