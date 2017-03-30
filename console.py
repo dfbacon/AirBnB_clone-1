@@ -140,26 +140,25 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """Use: update <class name> <id> <attribute name> <attribute value>"""
         args = args.split()
-        if len(args) == 0 or (len(args) <= 3 and args[0] not in
-                              HBNBCommand.valid_classes):
+        if len(args) == 0:
             print ("** class name missing **")
             return
-        if (len(args) == 1 and args[0] in HBNBCommand.valid_classes):
+        if len(args) == 1:
             print ("** instance id missing **")
             return
-        if len(args) == 2 and args[0] in HBNBCommand.valid_classes:
+        if len(args) == 2:
             print ("** attribute name missing **")
             return
-        if len(args) == 3 and args[0] in HBNBCommand.valid_classes:
+        if len(args) == 3:
             print ("** value missing **")
             return
-        if args[0] not in HBNBCommand.valid_classes:
+        if args[0] not in HBNBCommand.valid_classes.keys():
             print ("** class doesn't exist **")
             return
-        all_objs = storage.all()
-        for obj_id in all_objs.keys():
-            if obj_id == args[1]:
-                setattr(all_objs[obj_id], args[2], args[3])
+        all_objs = storage.all(args[0])
+        for key, value in all_objs.items():
+            if key == args[1]:
+                setattr(value, args[2], args[3])
                 storage.save()
                 return
         print ("** no instance found **")
