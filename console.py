@@ -3,7 +3,14 @@
 This is the 'command' module.
 '''
 import cmd
-from models import *
+from models.base_model import BaseModel
+from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -11,9 +18,9 @@ class HBNBCommand(cmd.Cmd):
     '''
     prompt = '(hbnb)'
     storage.reload()
-
-    valid_classes = ["BaseModel", "User", "State",
-                     "City", "Amenity", "Place", "Review"]
+    valid_classes = {"BaseModel": BaseModel, "User": User, "Amenity": Amenity,
+                     "City": City, "Place": Place, "Review": Review,
+                     "State": State}
 
     def emptyline(self):
         '''This is the 'emptyLine' function.
@@ -27,7 +34,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, args):
         """Ctrl + D to exit program"""
         print ("")
-        return True
+        return (True)
 
     def do_create(self, args):
         """Create a new Basemodel"""
@@ -36,33 +43,48 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             class_name = args[0]
-            if len(args) == 1 and class_name in HBNBCommand.valid_classes:
-                new_obj = eval(class_name)()
-                print(new_obj.id)
-                new_obj.save()
-            if len(args) > 1 and class_name in HBNBCommand.valid_classes:
-                key_dict = {}
-                for item in range(1, len(args)):
-                    name_val = args[item].split("=")
-                    if len(name_val) != 2:
-                        print("{} is invalid name-val pair".format(args[item]))
-                        continue
-                    for i in name_val[1]:
-                        if i.isalpha() is True:
-                            name_val[1] = name_val[1].replace("_", " ")
-                            break
-                    if name_val[1][0] == '"' and name_val[1][-1] == '"':
-                        name_val[1] = name_val[1][1:-1]
-                        key_dict[name_val[0]] = str(name_val[1])
-                    elif '.' in name_val[1]:
-                        key_dict[name_val[0]] = float(name_val[1])
-                    else:
-                        key_dict[name_val[0]] = int(name_val[1])
-                new_obj = eval(class_name)(**key_dict)
+            if class_name in HBNBCommand.valid_classes.keys():
+                if len(args) == 1:
+                    new_obj = HBNBCommand.valid_classes[class_name]()
+                else:
+                    result = self.__create_help(args[1:])
+                    if result is None:
+                        print("** object error **")
+                        return
+                    new_obj = HBNBCommand.valid_classes[class_name](**result)
                 print(new_obj.id)
                 new_obj.save()
             else:
-                return
+                print("** class doesn't exist **")
+
+    def __create_help(self, a_list):
+        '''Helper function for do_create
+        '''
+        try:
+            result = dict([item.split("=") for item in a_list])
+        except ValueError:
+            print("** format error **")
+            return None
+        for key in result.keys():
+            if "." in result[key]:
+                try:
+                    result[key] = float(result[key])
+                    continue
+                except (TypeError, ValueError):
+                    pass
+            else:
+                try:
+                    result[key] = int(result[key])
+                    continue
+                except (TypeError, ValueError):
+                    pass
+            if (result[key].count('"') == (result[key].count('\\"') + 2) and
+               " " not in result[key]):
+                result[key] = str(result[key].replace("_", " "))[1:-1]
+            else:
+                print("String Format Error for {}".format(result[key]))
+                return None
+        return (result)
 
     def do_show(self, args):
         """Usage: show BaseModel 1234-1234-1234"""
