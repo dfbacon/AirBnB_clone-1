@@ -2,47 +2,57 @@
 '''
 This is the 'base_model' module.
 '''
-import datetime
+from datetime import datetime
 import uuid
 import models
-import os
+from os import getenv
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, Table, DateTime
 
-try:
-    e = os.environ.get('HBNB_TYPE_STORAGE')
-    if e == "db":
-        Base = declarative_base()
-    else:
-        Base = object
-except:
+if getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
+    Base = declarative_base()
+else:
     Base = object
 
 
 class BaseModel():
     """The base class for all storage objects in this project"""
 
-    if os.environ.get('HBNB_TYPE_STORAGE') == "db":
+    if getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
         id = Column(String(60), primary_key=True, nullable=False)
-        created_at = Column(DateTime, default=datetime.datetime.now(),
+        created_at = Column(DateTime(timezone=True), default=datetime.now(),
                             nullable=False)
-        updated_at = Column(DateTime, default=datetime.datetime.now(),
-                            onupdate=datetime.datetime.now(), nullable=False)
+        updated_at = Column(DateTime(timezone=True), default=datetime.now(),
+                            nullable=False, onupdate=datetime.now)
 
     def __init__(self, *args, **kwargs):
         """initialize class object"""
-        if len(args) > 0:
-            for k in args[0]:
-                setattr(self, k, args[0][k])
-        else:
-            self.created_at = datetime.datetime.now()
+        if args:
+            kwargs = args[0]
+        if kwargs:
+            flag_id = False
+            flag_created_at = False
+            for key in kwargs.keys():
+                if key == "created_at" or key == "updated_at":
+                    if key == "created_at":
+                        flag_created_at = True
+                    if not isinstance(kwargs[key], datetime):
+                        kwargs[key] = datetime(
+                            *self.__str_to_numbers(kwargs[key]))
+                elif key == "id":
+                    flag_id = True
+                setattr(self, key, kwargs[key])
+            if not flag_created_at:
+                self.created_at = datetime.now()
+            if not flag_id:
+                self.id = str(uuid.uuid4())
+        elif not args:
+            self.created_at = datetime.now()
             self.id = str(uuid.uuid4())
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
     def save(self):
         """method to update self"""
-        self.updated_at = datetime.datetime.now()
+        self.__dict__["updated_at"] = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
@@ -54,16 +64,12 @@ class BaseModel():
     def to_json(self):
         """convert to json"""
         dupe = self.__dict__.copy()
-        if os.environ.get('HBNB_TYPE_STORAGE') != "db":
-            dupe["created_at"] = str(dupe["created_at"])
-            if ("updated_at" in dupe):
-                dupe["updated_at"] = str(dupe["updated_at"])
-                dupe["__class__"] = type(self).__name__
-        try:
-            del(self.__dict__['_sa_instance_state'])
-        except KeyError:
-            pass
-        return dupe
+        dupe.pop('_sa_instance_state', None)
+        dupe["created_at"] = dupe["created_at"].isoformat()
+        if ("updated_at" in dupe):
+            dupe["updated_at"] = dupe["updated_at"].isoformat()
+        dupe["__class__"] = type(self).__name__
+        return (dupe)
 
     def delete(self):
         '''delete current instance'''

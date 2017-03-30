@@ -2,16 +2,14 @@
 '''
 This is the 'user' module.
 '''
-from models import *
-from models.base_model import BaseModel, Base
-from models.place import Place
-from sqlalchemy import *
-from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base, Table, Column, String
+from sqlalchemy.orm import relationship, backref
+from os import getenv
 
 
 class User(BaseModel, Base):
     '''This is the 'User' class'''
-    if Base is not object:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = "users"
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
@@ -24,7 +22,6 @@ class User(BaseModel, Base):
         password = ""
         first_name = ""
         last_name = ""
-        places = [""]
 
     def __init__(self, *args, **kwargs):
         '''This is the initialization method'''

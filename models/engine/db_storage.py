@@ -14,42 +14,47 @@ from models.state import State
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.orm.scoping import scoped_session
-from models.base_model import Base
-from sqlalchemy import inspect
 
 
 class DBStorage():
     """This is the 'DBStorage class"""
     __engine = None
     __session = None
-    valid_models = ["User", "State", "City", "Amenity", "Place", "Review"]
+    valid_models = {"Amenity": Amenity, "City": City, "State": State,
+                     "Place": Place, "Review": Review,
+                     "User": User, "PlaceAmenity": PlaceAmenity}
 
     def __init__(self):
         '''This is the initialization method'''
-        uname = os.environ["HBNB_MYSQL_USER"]
-        upass = os.environ["HBNB_MYSQL_PWD"]
-        host = os.environ["HBNB_MYSQL_HOST"]
-        dbname = os.environ["HBNB_MYSQL_DB"]
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                                      .format(uname, upass, host, dbname))
-        self.__Session = sessionmaker()
-        self.__Session.configure(bind=self.__engine)
+        usr = os.getenv('HBNB_MYSQL_USER')
+        pwd = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST')
+        db = os.getenv('HBNB_MYSQL_DB')
+        env = os.getenv('HBNB_MYSQL_ENV')
+
+        eng_str = "mysql+mysqldb://{}:{}@{}/{}".format(usr, pwd, host, db)
+
+        self.__engine = create_engine(eng_str)
+        Session = sessionmaker(bind=self.__engine)
         Base.metadata.create_all(self.__engine)
-        self.__session = self.__Session()
+        self.__session = Session()
+        if env == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        '''This is the 'all' method'''
-        query = {}
-        if cls is not None:
-            for instance in self.__session.query(cls):
-                query.update(instance.id, instance)
-            return (query)
+        query_dict = {}
+        if cls is None:
+            for val_key, val_cls in self.valid_models.items():
+                for instance in self.__session.query(val_cls):
+                    query_dict[instance.id] = instance
         else:
-            for cls in DBStorage.valid_models:
-                cls = getattr(sys.modules["models"], cls)
+            if (isinstance(cls, str) is True):
+                for instance in self.__session.query(eval(cls)):
+                    query_dict[instance.id] = instance
+            else:
                 for instance in self.__session.query(cls):
-                    query.update({instance.id: instance})
-            return (query)
+                    query_dict[instance.id] = instance
+        return (query_dict)
 
     def new(self, obj):
         '''This is the 'new' method'''
@@ -70,4 +75,6 @@ class DBStorage():
         Base.metadata.create_all(self.__engine)
 
     def close(self):
+        '''this si the 'close' method
+        '''
         self.__session.remove()
